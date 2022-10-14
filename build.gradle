@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
+    id 'pmd'
 }
 
 group = 'com.ettransit'
@@ -30,4 +31,10 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+pmd {
+    consoleOutput = true
+    ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
+    ruleSets = []
 }
