@@ -9,5 +9,4 @@ public class EtTransitApplication {
   public static void main(String[] args) {
     SpringApplication.run(EtTransitApplication.class, args);
   }
-
 }

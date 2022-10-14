@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'com.diffplug.spotless' version '6.11.0'
     id 'java'
     id 'pmd'
 }
@@ -29,8 +30,32 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+tasks.withType(Test) {
     useJUnitPlatform()
+}
+
+spotless {
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*.gradle', '*.md', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+
+    java {
+
+        // fix formatting of type annotations
+        formatAnnotations()
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
 }
 
 pmd {
