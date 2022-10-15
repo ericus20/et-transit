@@ -2,6 +2,9 @@ plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'com.diffplug.spotless' version '6.11.0'
+    id 'eclipse'
+    id 'jacoco'
+    id 'idea'
     id 'java'
     id 'pmd'
 }
@@ -27,11 +30,32 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Testing
+    testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.withType(Test) {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    executionData(fileTree(project.buildDir).include("jacoco/*.exec"))
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = true
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+
+            ])
+        }))
+    }
 }
 
 spotless {
